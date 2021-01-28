@@ -14,7 +14,7 @@ const handleSearchError = (err, res, message) => {
   if (err.name === 'CastError' || err.name === 'DocumentNotFoundError') {
     return res.status(404).send(message);
   }
-  return res.status(500).send(err.message);
+  return res.status(500).send({ message: err.message });
 };
 
 module.exports = {
