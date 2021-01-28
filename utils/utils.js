@@ -1,5 +1,8 @@
 const handleValidationError = (err, res) => {
-  if (err.name === 'ValidationError' || err.name === 'CastError') {
+  if (err.name === 'CastError') {
+    return res.status(400).send({ message: err.message });
+  }
+  if (err.name === 'ValidationError') {
     const error = Object.values(err.errors).reduce((prev, item) => {
       const clone = prev;
       clone[item.path] = item.message;
