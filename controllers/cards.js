@@ -1,13 +1,7 @@
-// const fsPromise = require('fs').promises;
-// const path = require('path');
 const Card = require('../models/card');
-const { handleError } = require('../utils/utils');
+const { handleValidationError, handleSearchError } = require('../utils/utils');
 
 const getCards = (req, res) => {
-  // const filePath = path.join(__dirname, '..', 'data', 'cards.json');
-  // fsPromise.readFile(filePath, { encoding: 'utf8' })
-  //   .then((data) => res.send(JSON.parse(data)))
-  //   .catch((err) => res.status(500).send({ message: err.message }));
   Card.find({})
     .then((cards) => res.send(cards))
     .catch((err) => res.status(500).send({ message: err.message }));
@@ -19,17 +13,39 @@ const createCard = (req, res) => {
 
   Card.create({ name, link, owner: ownerId })
     .then((card) => res.send(card))
-    .catch((err) => handleError(err, res));
+    .catch((err) => handleValidationError(err, res));
 };
 
 const deleteCard = (req, res) => {
   const { cardId } = req.params;
 
-  Card.findByIdAndRemove(cardId)
+  Card.findByIdAndRemove(cardId).orFail()
+    .then(() => res.send({ message: 'Карточка удалена' }))
+    .catch((err) => handleSearchError(err, res, { message: 'Карточка не найдена в базе данных' }));
+};
+
+const likeCard = (req, res) => {
+  Card.findByIdAndUpdate(
+    req.params.cardId,
+    { $addToSet: { likes: req.user._id } },
+    { new: true },
+  )
+    .orFail()
     .then((card) => res.send(card))
-    .catch((err) => res.status(500).send({ message: err.name }));
+    .catch((err) => handleSearchError(err, res, { message: 'Карточка не найдена в базе данных' }));
+};
+
+const dislikeCard = (req, res) => {
+  Card.findByIdAndUpdate(
+    req.params.cardId,
+    { $pull: { likes: req.user._id } },
+    { new: true },
+  )
+    .orFail()
+    .then((card) => res.send(card))
+    .catch((err) => handleSearchError(err, res, { message: 'Карточка не найдена в базе данных' }));
 };
 
 module.exports = {
-  getCards, createCard, deleteCard,
+  getCards, createCard, deleteCard, likeCard, dislikeCard,
 };
