@@ -18,7 +18,8 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Поле должно быть заполнено'],
     validate: {
       validator(v) {
-        return /^https?:\/\/.+/.test(v);
+        const link = v.replace(/\s*$/, '');
+        return /^https?:\/\/\S+$/.test(link);
       },
       message: 'Введите корректный адрес сайта',
     },
