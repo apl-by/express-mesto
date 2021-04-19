@@ -4,8 +4,8 @@
 
 Back-end проекта "Mesto" на express. Предварительная версия  REST API сервера. Полная рабочая версия находится по ссылке ниже в итоговом проекте "Mesto".  
 ### Ссылки на остальные части проекта "Mesto":
-Первая часть "Mesto" на реакт без авторизации (фронтенд):   https://github.com/Apl-by/mesto-react;  
-Вторая часть "Mesto" на реакт с авторизацией (фронтенд): https://github.com/Apl-by/react-mesto-auth;
+Первая часть "Mesto" на реакт без авторизации (front-end):   https://github.com/Apl-by/mesto-react;  
+Вторая часть "Mesto" на реакт с авторизацией (front-end): https://github.com/Apl-by/react-mesto-auth;
 Итоговая версия проекта "Mesto" (front-end + back-end): https://github.com/Apl-by/react-mesto-api-full;
 ## Директории
 
